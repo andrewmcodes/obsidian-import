@@ -69,6 +69,8 @@ RSpec.describe Obsidian::Import::Adapters::OpenLibrary do
       expect(resource.source_url).to eq("https://openlibrary.org/works/OL123W")
       expect(resource.description).to eq("A definitive guide to Ruby.")
       expect(resource.metadata["subjects"]).to eq(["Ruby (Computer program language)"])
+      # The work-lookup shape carries `covers` (array), not the search `cover_i`.
+      expect(resource.metadata["cover_url"]).to eq("https://covers.openlibrary.org/b/id/456-L.jpg")
       expect(resource.tags).to eq(["book"])
     end
 
@@ -105,6 +107,17 @@ RSpec.describe Obsidian::Import::Adapters::OpenLibrary do
       expect(resource.metadata).not_to have_key("cover_url")
       expect(resource.metadata).not_to have_key("isbn")
       expect(resource.metadata).not_to have_key("subjects")
+    end
+
+    it "treats Open Library's -1 cover sentinel as no cover" do
+      resource = adapter.normalize(record: {"title" => "x", "key" => "/works/OL2W", "covers" => [-1]})
+      expect(resource.metadata).not_to have_key("cover_url")
+    end
+
+    it "does not raise on an essentially empty record" do
+      resource = adapter.normalize(record: {})
+      expect(resource).to be_a(Obsidian::Import::Resource)
+      expect(resource.source_url).to eq("https://openlibrary.org/works/")
     end
   end
 end

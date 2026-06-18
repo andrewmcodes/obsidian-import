@@ -127,5 +127,10 @@ RSpec.describe Obsidian::Import::CLI do
       expect(run("frobnicate")).to eq(1)
       expect(err.string).to include("Unknown command")
     end
+
+    it "renders a friendly error (not a backtrace) for an unknown flag / dash-prefixed value" do
+      expect(run("show", "gem", "--bogus")).to eq(1)
+      expect(err.string).to start_with("Error:")
+    end
   end
 end

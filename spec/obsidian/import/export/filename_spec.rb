@@ -19,6 +19,15 @@ RSpec.describe Obsidian::Import::Export::Filename do
     it "falls back to 'untitled' for empty slugs" do
       expect(described_class.slugify("!!!")).to eq("untitled")
     end
+
+    it "neutralizes path-traversal characters" do
+      ["../../etc/passwd", "..", "/etc/passwd", "a/b\\c"].each do |dangerous|
+        slug = described_class.slugify(dangerous)
+        expect(slug).not_to include("/")
+        expect(slug).not_to include("\\")
+        expect(slug).not_to include("..")
+      end
+    end
   end
 
   describe ".unique" do

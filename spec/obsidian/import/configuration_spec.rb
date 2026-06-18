@@ -20,6 +20,11 @@ RSpec.describe Obsidian::Import::Configuration do
       expect(described_class.load.vault_path).to be_nil
     end
 
+    it "treats a whitespace-only value as unset" do
+      write_config("vault_path: \"   \"\n")
+      expect(described_class.load.vault_path).to be_nil
+    end
+
     it "expands ~ from the config file" do
       write_config("vault_path: ~/Vault\n")
       expect(described_class.load.vault_path).to eq(File.expand_path("~/Vault"))
@@ -68,6 +73,13 @@ RSpec.describe Obsidian::Import::Configuration do
     it "returns nil for blank values" do
       write_config("api_keys:\n  tmdb: \"\"\n")
       expect(described_class.load.api_key("tmdb")).to be_nil
+    end
+
+    it "strips surrounding whitespace and treats whitespace-only as nil" do
+      write_config("api_keys:\n  tmdb: \"  abc  \"\n  github: \"   \"\n")
+      config = described_class.load
+      expect(config.api_key("tmdb")).to eq("abc")
+      expect(config.api_key("github")).to be_nil
     end
   end
 

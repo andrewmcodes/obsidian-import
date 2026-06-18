@@ -42,7 +42,7 @@ module Obsidian
             metadata: {
               "authors" => Array(record["author_name"]),
               "first_published" => record["first_publish_year"],
-              "cover_url" => cover_url(record["cover_i"]),
+              "cover_url" => cover_url(record["cover_i"] || Array(record["covers"]).first),
               "isbn" => Array(record["isbn"]).first,
               "subjects" => Array(record["subject"] || record["subjects"])
             },
@@ -74,10 +74,10 @@ module Obsidian
           end
         end
 
-        # @param cover_id [Integer, nil]
+        # @param cover_id [Integer, nil] Open Library uses +-1+ to mean "no cover".
         # @return [String, nil]
         def cover_url(cover_id)
-          return nil unless cover_id
+          return nil unless cover_id&.to_i&.positive?
           "https://covers.openlibrary.org/b/id/#{cover_id}-L.jpg"
         end
 

@@ -33,5 +33,12 @@ RSpec.describe Obsidian::Import::Export::Template do
       body = described_class.body_for(resource(type: "book"))
       expect(body).not_to include(">")
     end
+
+    it "prefixes every line of a multiline description so the blockquote stays valid" do
+      body = described_class.body_for(resource(type: "book", description: "Line one.\nLine two.\nLine three."))
+      expect(body).to include("> Line one.\n> Line two.\n> Line three.")
+      # No bare (unquoted) prose line leaks out of the blockquote.
+      expect(body).not_to match(/^Line two\./)
+    end
   end
 end

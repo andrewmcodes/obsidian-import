@@ -47,6 +47,10 @@ module Obsidian
     # Raised when writing a note into the vault fails.
     class ExportError < Error; end
 
+    # Guards lazy initialization of the global configuration so concurrent
+    # first-access does not build two configs and lose mutations.
+    CONFIG_MUTEX = Mutex.new
+
     class << self
       # @return [Zeitwerk::Loader] the loader managing autoloading for the gem.
       attr_reader :loader
@@ -62,14 +66,14 @@ module Obsidian
       # @return [Configuration] the global configuration, loaded from disk and
       #   the environment on first access.
       def configuration
-        @configuration ||= Configuration.load
+        CONFIG_MUTEX.synchronize { @configuration ||= Configuration.load }
       end
 
       # Reset the memoized configuration. Primarily a test seam.
       #
       # @return [void]
       def reset_configuration!
-        @configuration = nil
+        CONFIG_MUTEX.synchronize { @configuration = nil }
       end
     end
   end

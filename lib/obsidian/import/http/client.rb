@@ -21,8 +21,11 @@ module Obsidian
       # Credentials passed via headers or params are never logged or cached.
       class Client
         # Query-parameter names whose values must never appear in errors or
-        # cache keys.
-        SENSITIVE_PARAMS = %w[api_key apikey key token access_token].freeze
+        # cache keys are matched by this pattern (e.g. +api_key+, +access_token+,
+        # +client_secret+, +password+, +auth+). Matching by substring rather
+        # than a fixed list means a new secret-bearing parameter is redacted by
+        # default rather than leaking.
+        SENSITIVE_PARAM_PATTERN = /key|token|secret|password|auth|signature/i
 
         # @param base_url [String] the API base URL
         # @param headers [Hash] default headers sent with every request
@@ -103,17 +106,21 @@ module Obsidian
         end
 
         def cache_key(path, params)
-          safe = params.reject { |k, _| SENSITIVE_PARAMS.include?(k.to_s) }
+          safe = params.reject { |k, _| sensitive?(k) }
           query = safe.sort.map { |k, v| "#{k}=#{v}" }.join("&")
           "#{@source}:get:#{@base_url}#{path}?#{query}"
         end
 
         def redact(path, params)
           safe = params.map do |k, v|
-            SENSITIVE_PARAMS.include?(k.to_s) ? [k, "[REDACTED]"] : [k, v]
+            sensitive?(k) ? [k, "[REDACTED]"] : [k, v]
           end.to_h
           query = safe.map { |k, v| "#{k}=#{v}" }.join("&")
           query.empty? ? path : "#{path}?#{query}"
+        end
+
+        def sensitive?(key)
+          SENSITIVE_PARAM_PATTERN.match?(key.to_s)
         end
 
         def effective_ttl

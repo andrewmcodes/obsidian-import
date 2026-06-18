@@ -1,5 +1,5 @@
 <%- if resource.description && !resource.description.empty? -%>
-> <%= resource.description %>
+<%= resource.description.split("\n").map { |line| "> #{line}".rstrip }.join("\n") %>
 
 <%- end -%>
 ## Notes

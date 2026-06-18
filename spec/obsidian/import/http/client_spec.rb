@@ -44,6 +44,17 @@ RSpec.describe Obsidian::Import::HTTP::Client do
         end
       end
 
+      it "redacts secret-bearing params not on any fixed allowlist" do
+        stub_request(:get, "https://api.example.com/x")
+          .with(query: hash_including("client_secret" => "alpha", "access_token" => "bravo"))
+          .to_return(status: 403, body: "")
+        expect { client.get("/x", params: {client_secret: "alpha", access_token: "bravo"}) }
+          .to raise_error(Obsidian::Import::AuthenticationError) { |e|
+            expect(e.message).not_to include("alpha")
+            expect(e.message).not_to include("bravo")
+          }
+      end
+
       it "redacts sensitive params from error messages" do
         stub_request(:get, "https://api.example.com/x").with(query: hash_including("api_key" => "secret"))
           .to_return(status: 404, body: "")

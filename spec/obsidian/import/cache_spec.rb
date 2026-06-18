@@ -44,6 +44,22 @@ RSpec.describe Obsidian::Import::Cache do
       expect(cache.read("k", ttl: 0)).to be_nil
     end
 
+    it "expires entries strictly older than the TTL but keeps fresh ones" do
+      allow(cache).to receive(:now).and_return(1_000)
+      cache.write("k", "v")
+      allow(cache).to receive(:now).and_return(1_000 + 100) # exactly ttl => not fresh
+      expect(cache.read("k", ttl: 100)).to be_nil
+      allow(cache).to receive(:now).and_return(1_000 + 99) # within ttl => fresh
+      expect(cache.read("k", ttl: 100)).to eq("v")
+    end
+
+    it "returns nil (not an error) when the file vanishes after a check" do
+      cache.write("k", "v")
+      cache.clear
+      expect { cache.read("k") }.not_to raise_error
+      expect(cache.read("k")).to be_nil
+    end
+
     it "returns nil for corrupt JSON" do
       path = Dir.glob(File.join(dir, "*.json")).first || begin
         cache.write("k", "v")

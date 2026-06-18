@@ -71,6 +71,9 @@ module Obsidian
           @err.puts BANNER
           1
         end
+      rescue OptionParser::ParseError => e
+        @err.puts "Error: #{e.message}"
+        1
       rescue Obsidian::Import::Error => e
         @err.puts "Error: #{e.message}"
         1

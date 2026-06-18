@@ -47,11 +47,29 @@ RSpec.describe Obsidian::Import::Export::Frontmatter do
       description_line = described_class.render(res).lines.find { |l| l.start_with?("description:") }
       expect(description_line).to include(long.strip)
     end
+
+    it "round-trips unicode titles through YAML safely" do
+      res = Obsidian::Import::Resource.new(type: "book", title: "日本語 — 本 “quotes”", source: "S", source_id: "1")
+      parsed = YAML.safe_load(described_class.render(res).delete_prefix("---\n").delete_suffix("---\n"))
+      expect(parsed["title"]).to eq("日本語 — 本 “quotes”")
+    end
+
+    it "keeps a description with embedded ---/colons inside the frontmatter block" do
+      nasty = "line one: value\n---\nnot a delimiter: x"
+      res = Obsidian::Import::Resource.new(type: "book", title: "T", source: "S", source_id: "1", description: nasty)
+      yaml = described_class.render(res)
+      inner = yaml.delete_prefix("---\n").delete_suffix("---\n")
+      expect(YAML.safe_load(inner)["description"]).to eq(nasty)
+    end
   end
 
   describe ".scalarize" do
-    it "collapses nested hashes rather than nesting them" do
-      expect(described_class.scalarize({"a" => 1})).to be_a(String)
+    it "collapses nested hashes to their string form rather than nesting them" do
+      expect(described_class.scalarize({"a" => 1})).to eq({"a" => 1}.to_s)
+    end
+
+    it "collapses hashes nested inside arrays" do
+      expect(described_class.scalarize([{"a" => 1}, "b"])).to eq([{"a" => 1}.to_s, "b"])
     end
   end
 end

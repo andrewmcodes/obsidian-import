@@ -114,7 +114,8 @@ module Obsidian
       def vault_path
         raw = ENV.fetch("OBSIDIAN_VAULT", nil)
         raw = config.vault_path if raw.nil? || raw.empty?
-        return nil if raw.nil? || raw.to_s.empty?
+        raw = raw.to_s.strip
+        return nil if raw.empty?
         File.expand_path(raw)
       end
 
@@ -140,8 +141,9 @@ module Obsidian
         env_value = ENV.fetch(ENV_KEYS.fetch(key, ""), nil)
         value = env_value
         value = (config.api_keys || {})[key] if value.nil? || value.empty?
-        return nil if value.nil? || value.to_s.empty?
-        value.to_s
+        value = value.to_s.strip
+        return nil if value.empty?
+        value
       end
 
       # @return [Integer] cache time-to-live in seconds.

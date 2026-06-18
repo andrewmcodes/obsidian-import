@@ -68,6 +68,7 @@ module Obsidian
         # --- Home -----------------------------------------------------------
 
         def update_home(message)
+          return [self, nil] if @types.empty?
           if message.up?
             @cursor = (@cursor - 1) % @types.length
           elsif message.down?
@@ -142,6 +143,8 @@ module Obsidian
         def update_results(message)
           if message.esc? || message.to_s == "/"
             @screen = :search
+          elsif @results.empty?
+            # nothing to navigate
           elsif message.up?
             @cursor = (@cursor - 1) % @results.length
           elsif message.down?

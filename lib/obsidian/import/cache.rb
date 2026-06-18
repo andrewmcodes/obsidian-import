@@ -55,13 +55,10 @@ module Obsidian
       # @param ttl [Integer] freshness window in seconds
       # @return [Object, nil] the cached value, or nil if missing/expired
       def read(key, ttl: @ttl)
-        path = path_for(key)
-        return nil unless File.exist?(path)
-
-        envelope = JSON.parse(File.read(path))
+        envelope = JSON.parse(File.read(path_for(key)))
         return nil unless fresh?(envelope, ttl)
         envelope["value"]
-      rescue JSON::ParserError
+      rescue Errno::ENOENT, JSON::ParserError
         nil
       end
 
@@ -73,7 +70,13 @@ module Obsidian
       def write(key, value)
         FileUtils.mkdir_p(dir)
         envelope = {"stored_at" => now, "value" => value}
-        File.write(path_for(key), JSON.generate(envelope))
+        path = path_for(key)
+        # Write to a unique temp file and atomically rename into place so a
+        # concurrent reader/writer or a crash mid-write never sees a partial
+        # file at the canonical path.
+        tmp = "#{path}.#{Process.pid}.#{object_id}.tmp"
+        File.write(tmp, JSON.generate(envelope))
+        File.rename(tmp, path)
         value
       end
 

@@ -75,6 +75,15 @@ RSpec.describe Obsidian::Import::TUI::App do
       expect(preview).to include("type:", "gem", "source:", "RubyGems")
     end
 
+    it "returns from results to the search screen on /" do
+      stub_request(:get, "https://rubygems.org/api/v1/search.json")
+        .with(query: {"query" => "rails"}).to_return(status: 200, body: JSON.generate([gem_json]))
+      type_query("rails")
+      model.update(key(:enter)) # -> results
+      model.update(char("/"))
+      expect(model.view).to include("Search Ruby Gem")
+    end
+
     it "reports an empty result set without leaving the search screen" do
       stub_request(:get, "https://rubygems.org/api/v1/search.json")
         .with(query: {"query" => "zzz"}).to_return(status: 200, body: "[]")
@@ -124,6 +133,19 @@ RSpec.describe Obsidian::Import::TUI::App do
       allow(model).to receive(:system).and_return(false)
       model.update(char("y"))
       expect(model.view).to include("Clipboard unavailable")
+    end
+
+    it "copies the frontmatter when a clipboard tool is present" do
+      allow(model).to receive(:system).and_return(true)
+      allow(IO).to receive(:popen)
+      model.update(char("f"))
+      expect(model.view).to include("Copied frontmatter")
+    end
+
+    it "opens the source URL" do
+      allow(model).to receive(:system).and_return(true)
+      model.update(char("o"))
+      expect(model.view).to include("Opened https://rubygems.org/gems/rails")
     end
 
     it "returns to results on esc" do
