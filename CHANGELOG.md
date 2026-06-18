@@ -4,6 +4,14 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+### Changed
+
+- The GitHub adapter now prefers the `gh` CLI (`gh api`) when it is installed and authenticated, reusing the user's gh credentials, and falls back to a direct HTTP request otherwise. Set `OBSIDIAN_IMPORT_NO_GH=1` to force the HTTP path.
+
+### Fixed
+
+- Added Linux and macOS platforms to `Gemfile.lock` so the precompiled Charm (TUI) native gems install on CI and other platforms instead of attempting a from-source build.
+
 ## [0.1.0] - 2026-06-18
 
 ### Added

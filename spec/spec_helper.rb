@@ -59,6 +59,9 @@ RSpec.configure do |config|
       original = ENV.to_hash
       ENV["XDG_CONFIG_HOME"] = File.join(dir, "config")
       ENV["XDG_CACHE_HOME"] = File.join(dir, "cache")
+      # Force the deterministic HTTP path for GitHub by default so examples
+      # never shell out to a real `gh`; gh-path examples opt back in explicitly.
+      ENV[Obsidian::Import::GhRunner::DISABLE_ENV] = "1"
       Obsidian::Import.reset_configuration!
       begin
         if example.metadata[:vcr]

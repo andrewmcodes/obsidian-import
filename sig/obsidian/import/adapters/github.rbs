@@ -2,7 +2,11 @@ module Obsidian
   module Import
     module Adapters
       class GitHub < Base
+        @gh: GhRunner?
+
         BASE_URL: String
+
+        def initialize: (?gh: GhRunner?, **untyped kwargs) -> void
 
         def search: (query: String) -> Array[Resource]
 
@@ -11,6 +15,12 @@ module Obsidian
         def normalize: (record: untyped) -> Resource
 
         private
+
+        def fetch: (String path, **untyped params) -> untyped
+
+        def gh: () -> GhRunner
+
+        def cache_key: (String path, Hash[untyped, untyped] params) -> String
 
         def base_url: () -> String
 

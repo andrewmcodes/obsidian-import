@@ -1,0 +1,30 @@
+module Obsidian
+  module Import
+    class GhRunner
+      DISABLE_ENV: String
+
+      @executor: untyped
+      @available: bool?
+
+      def initialize: (?executor: untyped) -> void
+
+      def available?: () -> bool
+
+      def get: (String path, ?Hash[untyped, untyped] params) -> untyped
+
+      private
+
+      def compute_available: () -> bool
+
+      def capture: (Array[String] args) -> untyped
+
+      def parse: (String? stdout) -> untyped
+
+      def raise_for: (String stderr) -> void
+
+      def first_line: (String? text) -> String
+
+      def truthy?: (String? value) -> bool
+    end
+  end
+end

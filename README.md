@@ -89,6 +89,8 @@ Three sources accept credentials, resolved from the environment first, then the 
 
 Credentials are never logged, cached, or written into generated notes, and are redacted from error output.
 
+For GitHub specifically, if the [`gh` CLI](https://cli.github.com) is installed and authenticated, requests are made through `gh api` so they reuse your existing gh credentials (higher rate limits, no token wiring needed); otherwise obsidian-import falls back to a direct, optionally-`GITHUB_TOKEN`-authenticated HTTP request. Set `OBSIDIAN_IMPORT_NO_GH=1` to force the direct HTTP path.
+
 ## CLI usage
 
 ```bash

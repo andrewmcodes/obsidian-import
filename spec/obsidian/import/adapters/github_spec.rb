@@ -114,4 +114,38 @@ RSpec.describe Obsidian::Import::Adapters::GitHub do
       expect(resource.metadata["owner"]).to eq("ViewComponent")
     end
   end
+
+  describe "with the gh CLI available" do
+    let(:gh) { instance_double(Obsidian::Import::GhRunner, available?: true) }
+    let(:adapter) { described_class.new(gh: gh) }
+
+    it "looks up via `gh api` instead of a direct HTTP request" do
+      expect(gh).to receive(:get).with("repos/rails/rails", {}).and_return(repo_json)
+
+      resource = adapter.lookup(id: "rails/rails")
+      expect(resource.title).to eq("ViewComponent/view_component")
+      # No HTTP request was made (WebMock would have raised on an unstubbed one).
+      expect(a_request(:get, /api\.github\.com/)).not_to have_been_made
+    end
+
+    it "searches via `gh api` and normalizes results" do
+      expect(gh).to receive(:get)
+        .with("search/repositories", {q: "rails", per_page: 10})
+        .and_return("items" => [repo_json])
+
+      expect(adapter.search(query: "rails").map(&:title)).to eq(["ViewComponent/view_component"])
+    end
+
+    it "caches the gh response so a repeated lookup hits gh only once" do
+      allow(gh).to receive(:get).with("repos/rails/rails", {}).and_return(repo_json)
+
+      2.times { adapter.lookup(id: "rails/rails") }
+      expect(gh).to have_received(:get).once
+    end
+
+    it "propagates mapped gh errors" do
+      allow(gh).to receive(:get).and_raise(Obsidian::Import::NotFoundError)
+      expect { adapter.lookup(id: "nope/nope") }.to raise_error(Obsidian::Import::NotFoundError)
+    end
+  end
 end
