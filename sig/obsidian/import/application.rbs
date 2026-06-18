@@ -1,0 +1,31 @@
+module Obsidian
+  module Import
+    class Application
+      attr_reader config: Configuration
+
+      @exporter: Export::Exporter
+
+      def initialize: (?config: Configuration) -> void
+
+      def types: () -> Array[Hash[Symbol, untyped]]
+
+      def search: (String | Symbol type, String query) -> Array[Resource]
+
+      def lookup: (String | Symbol type, String id) -> Resource
+
+      def note: (Resource resource) -> Export::Note
+
+      def markdown: (Resource resource) -> String
+
+      def frontmatter: (Resource resource) -> String
+
+      def export: (Resource resource, ?vault_path: String?, ?folder: String?) -> String
+
+      def adapter_for: (String | Symbol type) -> Adapters::Base
+
+      private
+
+      def exporter: () -> Export::Exporter
+    end
+  end
+end

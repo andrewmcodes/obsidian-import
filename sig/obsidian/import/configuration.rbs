@@ -1,0 +1,42 @@
+module Obsidian
+  module Import
+    class Configuration
+      DEFAULT_FOLDERS: Hash[String, String]
+
+      ENV_KEYS: Hash[String, String]
+
+      def self.load: (?path: String) -> Configuration
+
+      def self.config_dir: () -> String
+
+      def self.config_file_path: () -> String
+
+      def self.init!: (?path: String, ?force: bool) -> String
+
+      def self.template_yaml: () -> String
+
+      def vault_path: () -> String?
+
+      def folders: () -> Hash[String, String]
+
+      def folder_for: (String | Symbol type) -> String
+
+      def api_key: (String | Symbol name) -> String?
+
+      def cache_ttl: () -> Integer
+
+      def configure: () { (untyped) -> void } -> void
+
+      # dry-configurable accessor
+      def config: () -> untyped
+
+      private
+
+      def apply_sources: (String path) -> void
+
+      def read_yaml: (String path) -> Hash[untyped, untyped]
+
+      def stringify: (Hash[untyped, untyped]? hash) -> Hash[String, untyped]
+    end
+  end
+end

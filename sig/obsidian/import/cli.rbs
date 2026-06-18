@@ -1,0 +1,39 @@
+module Obsidian
+  module Import
+    class CLI
+      BANNER: String
+
+      @out: IO
+
+      @err: IO
+
+      @app: Application
+
+      def self.start: (Array[String] argv, ?out: IO, ?err: IO) -> Integer
+
+      def initialize: (?out: IO, ?err: IO, ?application: Application) -> void
+
+      def run: (Array[String] argv) -> Integer
+
+      private
+
+      def cmd_types: (Array[String] argv) -> Integer
+
+      def cmd_search: (Array[String] argv) -> Integer
+
+      def cmd_show: (Array[String] argv) -> Integer
+
+      def cmd_export: (Array[String] argv) -> Integer
+
+      def cmd_config: (Array[String] argv) -> Integer
+
+      def print_version: () -> Integer
+
+      def print_help: () -> Integer
+
+      def usage_error: (String message) -> Integer
+
+      def truncate: (untyped text, ?limit: Integer) -> String
+    end
+  end
+end

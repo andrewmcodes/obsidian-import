@@ -1,0 +1,49 @@
+module Obsidian
+  module Import
+    class Resource
+      attr_reader type: String
+
+      attr_reader subtype: String?
+
+      attr_reader title: String
+
+      attr_reader description: String?
+
+      attr_reader source: String
+
+      attr_reader source_id: String
+
+      attr_reader source_url: String?
+
+      attr_reader metadata: Hash[String, untyped]
+
+      attr_reader tags: Array[String]
+
+      def initialize: (
+        type: String | Symbol,
+        title: untyped,
+        source: untyped,
+        source_id: String | Integer | nil,
+        ?subtype: (String | Symbol)?,
+        ?description: String?,
+        ?source_url: String?,
+        ?metadata: Hash[untyped, untyped]?,
+        ?tags: untyped
+      ) -> void
+
+      def core_fields: () -> Hash[Symbol, untyped]
+
+      def to_h: () -> Hash[Symbol, untyped]
+
+      def ==: (untyped other) -> bool
+
+      alias eql? ==
+
+      def hash: () -> Integer
+
+      private
+
+      def compact_metadata: (Hash[untyped, untyped]? metadata) -> Hash[String, untyped]
+    end
+  end
+end

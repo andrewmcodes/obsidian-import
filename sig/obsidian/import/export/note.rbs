@@ -1,0 +1,23 @@
+module Obsidian
+  module Import
+    module Export
+      class Note
+        attr_reader resource: Resource
+
+        def initialize: (Resource resource) -> void
+
+        def frontmatter: () -> String
+
+        def body: () -> String
+
+        def to_markdown: () -> String
+
+        alias to_s to_markdown
+
+        def slug: () -> String
+
+        def secondary_extension: () -> String?
+      end
+    end
+  end
+end

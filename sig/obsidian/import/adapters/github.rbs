@@ -1,0 +1,21 @@
+module Obsidian
+  module Import
+    module Adapters
+      class GitHub < Base
+        BASE_URL: String
+
+        def search: (query: String) -> Array[Resource]
+
+        def lookup: (id: String) -> Resource
+
+        def normalize: (record: untyped) -> Resource
+
+        private
+
+        def base_url: () -> String
+
+        def request_headers: () -> Hash[String, untyped]
+      end
+    end
+  end
+end

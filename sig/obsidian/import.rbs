@@ -1,6 +1,46 @@
 module Obsidian
   module Import
-    VERSION: String
-    # See the writing guide of rbs: https://github.com/ruby/rbs#guides
+    class Error < StandardError
+    end
+
+    class ConfigurationError < Error
+    end
+
+    class UnknownTypeError < Error
+    end
+
+    class AdapterError < Error
+    end
+
+    class MissingCredentialError < AdapterError
+    end
+
+    class NotFoundError < AdapterError
+    end
+
+    class AuthenticationError < AdapterError
+    end
+
+    class RateLimitError < AdapterError
+    end
+
+    class NetworkError < AdapterError
+    end
+
+    class ResponseError < AdapterError
+    end
+
+    class ExportError < Error
+    end
+
+    self.@configuration: Configuration?
+
+    def self.loader: () -> untyped
+
+    def self.configure: () ?{ (untyped) -> void } -> void
+
+    def self.configuration: () -> Configuration
+
+    def self.reset_configuration!: () -> void
   end
 end

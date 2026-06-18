@@ -1,0 +1,27 @@
+module Obsidian
+  module Import
+    module Adapters
+      class TMDb < Base
+        BASE_URL: String
+
+        IMAGE_BASE_URL: String
+
+        def search: (query: String) -> Array[Resource]
+
+        def lookup: (id: String) -> Resource
+
+        def normalize: (record: untyped) -> Resource
+
+        private
+
+        def media: () -> String
+
+        def poster_url: (String? path) -> String?
+
+        def base_url: () -> String
+
+        def request_params: () -> Hash[String, untyped]
+      end
+    end
+  end
+end

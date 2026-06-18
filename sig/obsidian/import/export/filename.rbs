@@ -1,0 +1,11 @@
+module Obsidian
+  module Import
+    module Export
+      module Filename
+        def self?.slugify: (untyped title) -> String
+
+        def self?.unique: (String dir, String slug, ?ext: String, ?secondary: String?) -> String
+      end
+    end
+  end
+end

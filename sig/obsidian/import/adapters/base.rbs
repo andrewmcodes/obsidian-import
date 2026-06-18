@@ -1,0 +1,56 @@
+module Obsidian
+  module Import
+    module Adapters
+      class Base
+        self.@object_types: Array[String]?
+
+        self.@source_name: String?
+
+        def self.object_types: (*String types) -> Array[String]
+
+        def self.source_name: (?String? name) -> String?
+
+        attr_reader config: Configuration
+
+        attr_reader cache: Cache
+
+        attr_reader type: String
+
+        @client: HTTP::Client
+
+        def initialize: (?type: String?, ?config: Configuration, ?cache: Cache?) -> void
+
+        def source: () -> String?
+
+        def search: (query: String) -> Array[Resource]
+
+        def lookup: (id: String) -> Resource
+
+        def normalize: (record: untyped) -> Resource
+
+        private
+
+        def client: () -> HTTP::Client
+
+        def base_url: () -> String
+
+        def request_headers: () -> Hash[String, untyped]
+
+        def request_params: () -> Hash[String, untyped]
+
+        def build: (
+          title: untyped,
+          source_id: String | Integer | nil,
+          ?subtype: (String | Symbol)?,
+          ?description: String?,
+          ?source_url: String?,
+          ?metadata: Hash[untyped, untyped],
+          ?tags: untyped,
+          ?type: String | Symbol
+        ) -> Resource
+
+        def require_credential!: (String | Symbol name) -> String
+      end
+    end
+  end
+end

@@ -1,0 +1,25 @@
+module Obsidian
+  module Import
+    module Export
+      module Template
+        SOFTWARE_TYPES: Array[String]
+
+        TEMPLATE_DIR: String
+
+        def self?.body_for: (Resource resource) -> String
+
+        def self?.template_name: (String type) -> String
+
+        def self?.source_for: (String type) -> String
+
+        class Context
+          attr_reader resource: Resource
+
+          def initialize: (Resource resource) -> void
+
+          def binding_for: () -> Binding
+        end
+      end
+    end
+  end
+end

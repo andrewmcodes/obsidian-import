@@ -1,0 +1,5 @@
+module Obsidian
+  module Import
+    VERSION: String
+  end
+end

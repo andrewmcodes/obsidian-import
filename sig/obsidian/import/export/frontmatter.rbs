@@ -1,0 +1,15 @@
+module Obsidian
+  module Import
+    module Export
+      module Frontmatter
+        CORE_ORDER: Array[String]
+
+        def self?.render: (Resource resource) -> String
+
+        def self?.to_hash: (Resource resource) -> Hash[String, untyped]
+
+        def self?.scalarize: (untyped value) -> untyped
+      end
+    end
+  end
+end

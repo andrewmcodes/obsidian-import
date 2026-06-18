@@ -1,0 +1,13 @@
+module Obsidian
+  module Import
+    module Export
+      class Exporter
+        attr_reader config: Configuration
+
+        def initialize: (?config: Configuration) -> void
+
+        def export: (Resource resource, ?vault_path: String?, ?folder: String?) -> String
+      end
+    end
+  end
+end

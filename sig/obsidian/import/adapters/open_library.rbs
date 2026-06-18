@@ -1,0 +1,25 @@
+module Obsidian
+  module Import
+    module Adapters
+      class OpenLibrary < Base
+        BASE_URL: String
+
+        def search: (query: String) -> Array[Resource]
+
+        def lookup: (id: String) -> Resource
+
+        def normalize: (record: untyped) -> Resource
+
+        private
+
+        def work_id: (Hash[untyped, untyped] record) -> String?
+
+        def description: (String | Hash[untyped, untyped] | nil value) -> String?
+
+        def cover_url: (Integer? cover_id) -> String?
+
+        def base_url: () -> String
+      end
+    end
+  end
+end

@@ -1,0 +1,52 @@
+module Obsidian
+  module Import
+    module HTTP
+      class Client
+        SENSITIVE_PARAMS: Array[String]
+
+        @base_url: String
+
+        @default_headers: Hash[untyped, untyped]
+
+        @default_params: Hash[String, untyped]
+
+        @cache: Cache?
+
+        @ttl: Integer?
+
+        @source: String?
+
+        @connection: untyped
+
+        def initialize: (
+          base_url: String,
+          ?headers: Hash[untyped, untyped],
+          ?params: Hash[untyped, untyped],
+          ?cache: Cache?,
+          ?ttl: Integer?,
+          ?source: String?
+        ) -> void
+
+        def get: (String path, ?params: Hash[untyped, untyped]) -> untyped
+
+        private
+
+        def perform: (String path, Hash[String, untyped] params) -> untyped
+
+        def handle: (untyped response, String path, Hash[String, untyped] params) -> untyped
+
+        def parse: (String? body) -> untyped
+
+        def connection: () -> untyped
+
+        def cache_key: (String path, Hash[String, untyped] params) -> String
+
+        def redact: (String path, Hash[String, untyped] params) -> String
+
+        def effective_ttl: () -> Integer
+
+        def stringify: (Hash[untyped, untyped]? hash) -> Hash[String, untyped]
+      end
+    end
+  end
+end

@@ -1,0 +1,19 @@
+module Obsidian
+  module Import
+    module Registry
+      TYPES: Hash[String, Hash[Symbol, untyped]]
+
+      def self?.types: () -> Array[String]
+
+      def self?.known?: (String | Symbol type) -> bool
+
+      def self?.label_for: (String | Symbol type) -> String
+
+      def self?.requires_key?: (String | Symbol type) -> bool
+
+      def self?.adapter_for: (String | Symbol type, **untyped kwargs) -> Adapters::Base
+
+      def self?.entry: (String | Symbol type) -> Hash[Symbol, untyped]
+    end
+  end
+end

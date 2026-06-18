@@ -1,0 +1,23 @@
+module Obsidian
+  module Import
+    module Adapters
+      class Npm < Base
+        BASE_URL: String
+
+        def search: (query: String) -> Array[Resource]
+
+        def lookup: (id: String) -> Resource
+
+        def normalize: (record: untyped) -> Resource
+
+        private
+
+        def github_url: (Hash[untyped, untyped] record) -> String?
+
+        def author: (untyped value) -> untyped
+
+        def base_url: () -> String
+      end
+    end
+  end
+end

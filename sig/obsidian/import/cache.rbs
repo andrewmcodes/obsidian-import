@@ -1,0 +1,29 @@
+module Obsidian
+  module Import
+    class Cache
+      attr_reader dir: String
+
+      attr_reader ttl: Integer
+
+      def self.default_dir: () -> String
+
+      def initialize: (?dir: String, ?ttl: Integer) -> void
+
+      def fetch: (String key, ?ttl: Integer) { () -> untyped } -> untyped
+
+      def read: (String key, ?ttl: Integer) -> untyped
+
+      def write: (String key, untyped value) -> untyped
+
+      def clear: () -> void
+
+      private
+
+      def path_for: (String key) -> String
+
+      def fresh?: (Hash[String, untyped] envelope, Integer ttl) -> bool
+
+      def now: () -> untyped
+    end
+  end
+end
