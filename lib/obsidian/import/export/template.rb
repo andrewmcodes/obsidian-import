@@ -29,7 +29,11 @@ module Obsidian
           SOFTWARE_TYPES.include?(type.to_s) ? "software" : "default"
         end
 
+        # Read the raw ERB template source for a type.
+        #
         # @api private
+        # @param type [String]
+        # @return [String]
         def source_for(type)
           File.read(File.join(TEMPLATE_DIR, "#{template_name(type)}.md.erb"))
         end
