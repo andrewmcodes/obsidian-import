@@ -1,0 +1,9 @@
+--markup markdown
+--markup-provider redcarpet
+--output-dir doc
+--readme README.md
+--protected
+lib/**/*.rb
+-
+docs/adr/*.md
+CHANGELOG.md

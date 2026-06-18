@@ -1,2 +1,26 @@
 [tools]
 ruby = "4.0.3"
+
+[tasks.test]
+description = "Run the RSpec test suite"
+run = "bundle exec rspec"
+
+[tasks.lint]
+description = "Run StandardRB"
+run = "bundle exec standardrb"
+
+[tasks.format]
+description = "Auto-correct style violations with StandardRB"
+run = "bundle exec standardrb --fix"
+
+[tasks.typecheck]
+description = "Run Steep type checking against RBS signatures"
+run = "bundle exec steep check"
+
+[tasks.docs]
+description = "Generate YARD documentation"
+run = "bundle exec yard doc"
+
+[tasks.ci]
+description = "Run the full CI pipeline (lint, typecheck, test)"
+depends = ["lint", "typecheck", "test"]
