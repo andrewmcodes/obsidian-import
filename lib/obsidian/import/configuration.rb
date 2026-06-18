@@ -68,6 +68,27 @@ module Obsidian
           File.join(config_dir, "config.yml")
         end
 
+        # Write a starter config file with user-only permissions.
+        #
+        # @param path [String] destination path
+        # @param force [Boolean] overwrite an existing file
+        # @return [String] the path written
+        # @raise [ConfigurationError] if the file exists and +force+ is false
+        def init!(path: config_file_path, force: false)
+          if File.exist?(path) && !force
+            raise ConfigurationError, "Config already exists at #{path}. Pass --force to overwrite."
+          end
+
+          FileUtils.mkdir_p(File.dirname(path))
+          File.write(path, template_yaml)
+          begin
+            File.chmod(0o600, path)
+          rescue SystemCallError, NotImplementedError
+            # Permissions are best-effort where the platform supports them.
+          end
+          path
+        end
+
         # @return [String] a commented YAML template for +config init+.
         def template_yaml
           <<~YAML
