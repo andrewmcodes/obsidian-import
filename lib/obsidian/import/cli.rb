@@ -19,6 +19,7 @@ module Obsidian
         obsidian-import — import metadata into an Obsidian vault
 
         Usage:
+          obsidian-import                  # launch the interactive TUI
           obsidian-import types
           obsidian-import search <type> <query>
           obsidian-import show <type> <id> [--frontmatter]
@@ -56,13 +57,15 @@ module Obsidian
         command = argv.shift
 
         case command
+        when nil then launch_tui
+        when "tui" then launch_tui
         when "types" then cmd_types(argv)
         when "search" then cmd_search(argv)
         when "show" then cmd_show(argv)
         when "export" then cmd_export(argv)
         when "config" then cmd_config(argv)
         when "-v", "--version" then print_version
-        when nil, "-h", "--help", "help" then print_help
+        when "-h", "--help", "help" then print_help
         else
           @err.puts "Unknown command: #{command}"
           @err.puts BANNER
@@ -142,6 +145,10 @@ module Obsidian
         path = Configuration.init!(force: force)
         @out.puts "Wrote config to #{path}"
         0
+      end
+
+      def launch_tui
+        TUI.start(application: @app, out: @out)
       end
 
       def print_version

@@ -136,7 +136,9 @@ On success, `export` prints the absolute path of the note it created. All librar
 
 ### Interactive use
 
-Running `obsidian-import` with no arguments is reserved for an interactive [Charm Ruby](https://github.com/charmbracelet) TUI — a Spotlight/Raycast-style flow to pick a type, search live, preview metadata, and create a note. The same `Application` facade backs both the CLI and the TUI, so behavior is identical across interfaces.
+Running `obsidian-import` with no arguments (or `obsidian-import tui`) launches an interactive [Charm Ruby](https://github.com/charmbracelet) TUI — a Spotlight/Raycast-style flow to pick a type, search live, preview metadata, and create a note. The same `Application` facade backs both the CLI and the TUI, so behavior is identical across interfaces.
+
+Keys: `↑`/`↓` navigate, `enter` selects/searches, `/` re-edits the query from the results list, `esc` goes back, and from the preview screen `c` creates the note, `y` copies the Markdown, `f` copies the frontmatter, `o` opens the source URL, and `ctrl+c` quits. The TUI's Charm gems are native extensions loaded lazily, so if they are unavailable on your platform the CLI and the rest of the library keep working.
 
 ## How notes are written
 

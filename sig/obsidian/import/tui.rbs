@@ -1,0 +1,41 @@
+module Obsidian
+  module Import
+    module TUI
+      def self.start: (?application: Application, ?out: untyped) -> Integer
+
+      class App
+        @app: Application
+        @screen: Symbol
+        @types: Array[Hash[Symbol, untyped]]
+        @cursor: Integer
+        @query: String
+        @results: Array[Resource]
+        @selected: Resource?
+        @status: String?
+        @error: String?
+        @current_type: Hash[Symbol, untyped]
+
+        def initialize: (Application application) -> void
+        def init: () -> [App, untyped]
+        def update: (untyped message) -> [App, untyped]
+        def view: () -> String
+      end
+
+      module Theme
+        ACCENT: String
+        MUTED: String
+        DANGER: String
+
+        def self.title: (String text) -> String
+        def self.heading: (String text) -> String
+        def self.selected: (String text) -> String
+        def self.dim: (untyped text) -> String
+        def self.error: (String text) -> String
+        def self.cursor: () -> String
+        def self.prompt: () -> String
+        def self.caret: () -> String
+        def self.style: () -> untyped
+      end
+    end
+  end
+end

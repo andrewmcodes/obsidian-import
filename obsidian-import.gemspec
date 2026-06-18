@@ -37,4 +37,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency "zeitwerk", "~> 2.6"
   spec.add_dependency "faraday", "~> 2.0"
   spec.add_dependency "dry-configurable", "~> 1.0"
+
+  # Charm Ruby powers the interactive TUI. These are native extensions loaded
+  # lazily by Obsidian::Import::TUI so the CLI/core still work if they are
+  # unavailable on a given platform.
+  spec.add_dependency "bubbletea", "~> 0.1"
+  spec.add_dependency "lipgloss", "~> 0.2"
 end

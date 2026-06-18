@@ -22,5 +22,12 @@ target :lib do
     # return type is rejected by RBS as a duplicate definition, so this is
     # demoted to a hint to clear that single false positive.
     hash[Steep::Diagnostic::Ruby::ArgumentTypeMismatch] = :hint
+    # We sign public APIs, not private helper methods, so declaring a class in
+    # RBS should not require every private method to be declared too.
+    hash[Steep::Diagnostic::Ruby::UndeclaredMethodDefinition] = :hint
+    # `&` block-forwarding through an untyped boundary is a known false positive.
+    hash[Steep::Diagnostic::Ruby::BlockTypeMismatch] = :hint
+    # Empty collection literals (`{}`, `[]`) need no inline type annotation here.
+    hash[Steep::Diagnostic::Ruby::UnannotatedEmptyCollection] = :hint
   end
 end

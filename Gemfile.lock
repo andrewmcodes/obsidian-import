@@ -2,8 +2,10 @@ PATH
   remote: .
   specs:
     obsidian-import (0.1.0)
+      bubbletea (~> 0.1)
       dry-configurable (~> 1.0)
       faraday (~> 2.0)
+      lipgloss (~> 0.2)
       zeitwerk (~> 2.6)
 
 GEM
@@ -27,6 +29,10 @@ GEM
     ast (2.4.3)
     base64 (0.3.0)
     bigdecimal (4.1.2)
+    bubbletea (0.1.4)
+      lipgloss (~> 0.1)
+    bubbletea (0.1.4-arm64-darwin)
+      lipgloss (~> 0.1)
     concurrent-ruby (1.3.7)
     connection_pool (3.0.2)
     crack (1.0.1)
@@ -66,6 +72,8 @@ GEM
     json (2.19.9)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
+    lipgloss (0.2.2)
+    lipgloss (0.2.2-arm64-darwin)
     listen (3.10.0)
       logger
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -216,6 +224,8 @@ CHECKSUMS
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
   bigdecimal (4.1.2) sha256=53d217666027eab4280346fba98e7d5b66baaae1b9c3c1c0ffe89d48188a3fbd
+  bubbletea (0.1.4) sha256=33c3ea5eb7ab03160b942a9a8062ba04d0af2245a0b6b7457853ac4bd3218f69
+  bubbletea (0.1.4-arm64-darwin) sha256=112af8ba51b38c4281b648ce43375e9bbe7b666dbb30c8b8d1cd13b4e163e6cb
   bundler (4.0.11) sha256=5bcec0fb78302e48d02ee46f10ee6e6942be647ba5b44a6d1ddfda9a240ce785
   concurrent-ruby (1.3.7) sha256=4412caec3a5ea2e5fdc52076724c071a81f2c0593d83b2ac8cbb8ca63b3151b0
   connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
@@ -240,6 +250,8 @@ CHECKSUMS
   json (2.19.9) sha256=9b9025b7cdddafa38d316eca0b2358488e42d417045c1b90d216a9fefe46b79a
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
+  lipgloss (0.2.2) sha256=d803bef2ce53aa7b113d032a4e1f8d3f6fb1841532b379c0b2bfff23a3af85e9
+  lipgloss (0.2.2-arm64-darwin) sha256=fed911706463ed21d249eace2224cd39323e94f4ab2a55ff6763b358b780d18f
   listen (3.10.0) sha256=c6e182db62143aeccc2e1960033bebe7445309c7272061979bb098d03760c9d2
   logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
   minitest (6.0.6) sha256=153ea36d1d987a62942382b61075745042a2b3123b1cd48f4c3675af9cc7d6f1

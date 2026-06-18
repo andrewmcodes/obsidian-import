@@ -30,9 +30,23 @@ RSpec.describe Obsidian::Import::CLI do
       expect(out.string).to include(Obsidian::Import::VERSION)
     end
 
-    it "prints help with no arguments" do
-      expect(run).to eq(0)
+    it "prints help with --help" do
+      expect(run("--help")).to eq(0)
       expect(out.string).to include("Usage:")
+    end
+  end
+
+  describe "interactive TUI" do
+    it "launches the TUI with no arguments" do
+      allow(Obsidian::Import::TUI).to receive(:start).and_return(0)
+      expect(run).to eq(0)
+      expect(Obsidian::Import::TUI).to have_received(:start)
+    end
+
+    it "launches the TUI via the tui subcommand" do
+      allow(Obsidian::Import::TUI).to receive(:start).and_return(0)
+      expect(run("tui")).to eq(0)
+      expect(Obsidian::Import::TUI).to have_received(:start)
     end
   end
 
