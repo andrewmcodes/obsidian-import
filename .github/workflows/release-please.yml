@@ -1,0 +1,22 @@
+name: Release Please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      # Maintains a release PR that bumps lib/obsidian/import/version.rb and the
+      # CHANGELOG from Conventional Commits; merging it tags the release and
+      # creates the GitHub release. Config lives in release-please-config.json
+      # and .release-please-manifest.json.
+      - uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
