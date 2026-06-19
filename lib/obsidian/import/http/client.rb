@@ -3,6 +3,7 @@
 require "faraday"
 require "json"
 require "uri"
+require "digest"
 
 module Obsidian
   module Import
@@ -49,29 +50,61 @@ module Obsidian
         # @return [Hash, Array] the parsed JSON response
         # @raise [AdapterError] on transport, status, or parse failures
         def get(path, params: {})
+          request(:get, path, params: params)
+        end
+
+        # Perform a POST with a JSON body and return the parsed JSON response.
+        #
+        # Like {#get}, successful responses are cached; the cache key includes a
+        # digest of the body so different queries do not collide. Used for APIs
+        # whose query interface is a POST (e.g. the VS Code Marketplace).
+        #
+        # @param path [String] request path relative to the base URL
+        # @param body [Object] a JSON-serializable request body
+        # @param params [Hash] additional query parameters
+        # @return [Hash, Array] the parsed JSON response
+        # @raise [AdapterError] on transport, status, or parse failures
+        def post(path, body:, params: {})
+          request(:post, path, params: params, body: body)
+        end
+
+        private
+
+        def request(method, path, params:, body: nil)
           # A leading slash would make Faraday discard the base URL's path, so
           # requests are always relative to the (trailing-slash) base.
           path = path.to_s.sub(%r{\A/+}, "")
           merged = @default_params.merge(stringify(params))
-          key = cache_key(path, merged)
+          key = cache_key(method, path, merged, body)
 
           if @cache
             cached = @cache.read(key, ttl: effective_ttl)
             return cached unless cached.nil?
           end
 
-          body = perform(path, merged)
-          @cache&.write(key, body)
-          body
+          result = perform(method, path, merged, body)
+          @cache&.write(key, result)
+          result
         end
 
-        private
-
-        def perform(path, params)
-          response = connection.get(path, params)
+        def perform(method, path, params, body)
+          response = dispatch(method, path, params, body)
           handle(response, path, params)
         rescue Faraday::TimeoutError, Faraday::ConnectionFailed => e
           raise NetworkError, "Network error contacting #{@source}: #{e.message}"
+        end
+
+        def dispatch(method, path, params, body)
+          case method
+          when :get
+            connection.get(path, params)
+          when :post
+            connection.post(path) do |req|
+              req.params.update(params) unless params.empty?
+              req.headers["Content-Type"] = "application/json"
+              req.body = JSON.generate(body)
+            end
+          end
         end
 
         def handle(response, path, params)
@@ -105,10 +138,11 @@ module Obsidian
           end
         end
 
-        def cache_key(path, params)
+        def cache_key(method, path, params, body)
           safe = params.reject { |k, _| sensitive?(k) }
           query = safe.sort.map { |k, v| "#{k}=#{v}" }.join("&")
-          "#{@source}:get:#{@base_url}#{path}?#{query}"
+          digest = body.nil? ? "" : ":#{Digest::SHA256.hexdigest(JSON.generate(body))}"
+          "#{@source}:#{method}:#{@base_url}#{path}?#{query}#{digest}"
         end
 
         def redact(path, params)

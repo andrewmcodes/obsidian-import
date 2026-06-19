@@ -2,7 +2,7 @@ module Obsidian
   module Import
     module HTTP
       class Client
-        SENSITIVE_PARAMS: Array[String]
+        SENSITIVE_PARAM_PATTERN: Regexp
 
         @base_url: String
 
@@ -29,9 +29,15 @@ module Obsidian
 
         def get: (String path, ?params: Hash[untyped, untyped]) -> untyped
 
+        def post: (String path, body: untyped, ?params: Hash[untyped, untyped]) -> untyped
+
         private
 
-        def perform: (String path, Hash[String, untyped] params) -> untyped
+        def request: (Symbol method, String path, params: Hash[untyped, untyped], ?body: untyped) -> untyped
+
+        def perform: (Symbol method, String path, Hash[String, untyped] params, untyped body) -> untyped
+
+        def dispatch: (Symbol method, String path, Hash[String, untyped] params, untyped body) -> untyped
 
         def handle: (untyped response, String path, Hash[String, untyped] params) -> untyped
 
@@ -39,9 +45,11 @@ module Obsidian
 
         def connection: () -> untyped
 
-        def cache_key: (String path, Hash[String, untyped] params) -> String
+        def cache_key: (Symbol method, String path, Hash[String, untyped] params, untyped body) -> String
 
         def redact: (String path, Hash[String, untyped] params) -> String
+
+        def sensitive?: (untyped key) -> bool
 
         def effective_ttl: () -> Integer
 
