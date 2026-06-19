@@ -12,6 +12,7 @@ module Obsidian
         "npm_package" => {adapter: "Adapters::Npm", label: "npm Package", requires_key: false},
         "github_repo" => {adapter: "Adapters::GitHub", label: "GitHub Repository", requires_key: false},
         "app" => {adapter: "Adapters::Apple", label: "App", requires_key: false},
+        "vscode_extension" => {adapter: "Adapters::VSCode", label: "VS Code Extension", requires_key: false},
         "movie" => {adapter: "Adapters::TMDb", label: "Movie", requires_key: true},
         "tv_show" => {adapter: "Adapters::TMDb", label: "TV Show", requires_key: true},
         "podcast" => {adapter: "Adapters::ListenNotes", label: "Podcast", requires_key: true}

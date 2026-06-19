@@ -91,6 +91,7 @@ loader.inflector.inflect(
   "npm" => "Npm",
   "github" => "GitHub",
   "tmdb" => "TMDb",
+  "vscode" => "VSCode",
   "url" => "URL"
 )
 loader.setup

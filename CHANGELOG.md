@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+### Added
+
+- VS Code extensions adapter (`vscode_extension`), sourced from the Visual Studio Marketplace gallery API. Notes use the software template and a `<slug>.extension.md` filename, and land in the "VS Code Extensions" folder by default.
+
 ### Changed
 
 - The GitHub adapter now prefers the `gh` CLI (`gh api`) when it is installed and authenticated, reusing the user's gh credentials, and falls back to a direct HTTP request otherwise. Set `OBSIDIAN_IMPORT_NO_GH=1` to force the HTTP path.

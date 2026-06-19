@@ -1,0 +1,36 @@
+module Obsidian
+  module Import
+    module Adapters
+      class VSCode < Base
+        BASE_URL: String
+        API_VERSION: String
+        TARGET: String
+        FILTER_TARGET: Integer
+        FILTER_EXTENSION_NAME: Integer
+        FILTER_SEARCH_TEXT: Integer
+        FLAGS: Integer
+        ICON_ASSET: String
+
+        def search: (query: String) -> Array[Resource]
+
+        def lookup: (id: String) -> Resource
+
+        def normalize: (record: untyped) -> Resource
+
+        private
+
+        def query_extensions: (filter_type: Integer, value: String, page_size: Integer) -> Array[untyped]
+
+        def latest_version: (untyped record) -> untyped
+
+        def statistic: (untyped record, String name) -> untyped
+
+        def icon_url: (untyped record) -> untyped
+
+        def base_url: () -> String
+
+        def request_headers: () -> Hash[String, String]
+      end
+    end
+  end
+end

@@ -9,7 +9,7 @@ module Obsidian
       # resource's object type.
       module Template
         # Object types that use the shared software-object template.
-        SOFTWARE_TYPES = %w[gem npm_package github_repo app].freeze
+        SOFTWARE_TYPES = %w[gem npm_package github_repo app vscode_extension].freeze
 
         # Directory holding the bundled +.md.erb+ templates.
         TEMPLATE_DIR = File.expand_path("../templates", __dir__)

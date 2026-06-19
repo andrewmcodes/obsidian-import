@@ -29,6 +29,7 @@ module Obsidian
         "npm_package" => "npm Packages",
         "github_repo" => "GitHub Repositories",
         "app" => "Apps",
+        "vscode_extension" => "VS Code Extensions",
         "movie" => "Movies",
         "tv_show" => "TV Shows",
         "podcast" => "Podcasts"

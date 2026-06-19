@@ -15,6 +15,7 @@ Every object type has a single canonical source of truth, queried through that s
 | `npm_package` | npm                 |
 | `github_repo` | GitHub              |
 | `app`         | Apple App Store     |
+| `vscode_extension` | Visual Studio Marketplace |
 | `movie`       | TMDb                |
 | `tv_show`     | TMDb                |
 | `podcast`     | Listen Notes        |

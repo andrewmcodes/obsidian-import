@@ -3,7 +3,7 @@
 RSpec.describe Obsidian::Import::Registry do
   it "registers every PRD object type" do
     expect(described_class.types).to match_array(
-      %w[book gem npm_package github_repo app movie tv_show podcast]
+      %w[book gem npm_package github_repo app vscode_extension movie tv_show podcast]
     )
   end
 
